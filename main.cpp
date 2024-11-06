@@ -1,6 +1,9 @@
 #include <iostream>
 #include <array>
 #include <string_view>
+#include <thread>
+#include <chrono>
+#include <random>
 
 std::string_view randomMessage(){
     std::array<std::string_view, 47> retryMessages = {
@@ -68,6 +71,28 @@ bool isNumber(const std::string& input)
     return false;
 }
 
+void load() {
+    const int barWidth = 50;
+    std::cout << "Thinking: [";
+    for (int i = 0; i < barWidth; ++i) {
+        std::cout << " ";
+    }
+    std::cout << "]\rThinking: [";
+    std::cout.flush();
+
+    // Random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(50, 500);
+
+    for (int i = 0; i < barWidth; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(dis(gen)));
+        std::cout << "=";
+        std::cout.flush();
+    }
+    std::cout << "] Done!" << std::endl;
+}
+
 int main()
 {
     // Welcome message
@@ -89,8 +114,10 @@ int main()
     std::cout << "Please input the number you are thinking of:";
     std::cin >> input;
 
+    load();
+
     if(isNumber(input))
-        std::cout << "You entered: " << input << std::endl;
+        std::cout << "You were thinking of: " << input << std::endl;
 
     return 0;
 }
