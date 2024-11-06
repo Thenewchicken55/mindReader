@@ -1,13 +1,9 @@
 .PHONY: run
 run: build
-	@echo "Running..."
 	./main
 
-.PHONY: build
-build:
-	@echo "Building..."
+build: main.cpp
 	g++ -o main main.cpp
-	@echo "Done."
 
 .PHONY: clean
 clean:
